@@ -23,15 +23,23 @@ public class BoundedStack {
 
     // Representation Invariant:
     //  capacity > 0
-    //  data.length == capacity
     //  data != null
-    //  -1 <= top 
+    //  data.length == capacity
+    //  -1 <= top
     //  top < capacity
-
+ 
     // Safety from rep exposure:
     //  คัดลอก object ทั้งขาเข้าและขาออก
+
     // เขียน checkRep()
     //  แปลง RI ทุกข้อเป็น assert 
+    private void checkRep() {
+        assert capacity > 0 : "capacity must be > 0" ;
+        assert data != null : "data not be null" ;
+        assert data.length == capacity : "data.length must == capacity" ;
+        assert -1 <= top : "top must be >= -1 " ;
+        assert top < capacity : "capacity must be > top" ;
+    }
 
     //==== Creators ====
     // สร้าง BoundedStack จากขนาดที่ให้มา
@@ -41,6 +49,13 @@ public class BoundedStack {
      * @throws IllegalArgumentException if capacity <= 0
      * 
      */
+    public BoundedStack(int capacity){
+        if(capacity <= 0) throw new IllegalArgumentException("capacity must be > 0") ;
+        this.capacity = capacity ;
+        this.data = new int[capacity] ;
+        this.top = -1 ;
+        checkRep();
+    }
 
 
     //==== Obsevers ====
