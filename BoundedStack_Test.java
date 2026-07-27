@@ -37,11 +37,32 @@ public class BoundedStack_Test {
     }
     private static void testCreators(){
         System.out.println("-- testCreator --");
-        // R1: capacity=-1 -> throw
-        // R2: capacity=0 -> throw
-        // R3: capacity=1 -> isEmpty==true
+
+        boolean threwcreat_1 = false;
+        try {
+            BoundedStack bounded1 = new BoundedStack(-1);
+        } catch (Exception e) {
+            threwcreat_1 = true;
+        }
+        check("capacity=-1 -> throw", threwcreat_1);
+
+        boolean threwcreat_2 = false;
+        try {
+            BoundedStack bounded2 = new BoundedStack(0);
+        } catch (Exception e) {
+            threwcreat_2 = true;
+        }
+        check("capacity=0 -> throw", threwcreat_2);
+
+        BoundedStack bounded3 = new BoundedStack(1);
+        check("capacity=1 -> isEmpty==true",bounded3.isEmpty());
+        
         // R4: capacity=3 -> isEmpty==true
+        BoundedStack bounded4 = new BoundedStack(3);
+        check("capacity=3 -> isEmpty==true", bounded4.isEmpty());
     }
+
+    
     private static void testObservers(){
         BoundedStack bounded = new BoundedStack(2);
         check("isEmpty() ว่าง -> true ",bounded.isEmpty()); 
@@ -56,6 +77,7 @@ public class BoundedStack_Test {
         check("peek() ตอนข้อมูลว่าง -> throw IllegalStateException",threwpeek);
 
         bounded.push(2);bounded.push(3);
+
         check("size() เต็ม == capacity", bounded.size() == 2 );
         check("isEmpty() มีข้อมูล -> false", !bounded.isEmpty());
         check("peek() ข้อมูลหลายตัว -> ได้ตัวบนสุด(3)", bounded.peek() == 3);
@@ -65,12 +87,11 @@ public class BoundedStack_Test {
         BoundedStack bounded = new BoundedStack(2);
         bounded.push(12); int before = bounded.size();
         bounded.push(88); int after = bounded.size();
-        // R12: push() -> getSize()ต้องเพิ่ม
+
         check("push() -> size()ต้องเพิ่ม", after>before);
-        // R13: push() -> peek()แล้วต้องเจอตัวล่าสุดที่push
         check("push() -> peek()แล้วต้องเจอตัวล่าสุดที่push", bounded.peek()==88);
         check("push()ข้อมูลตัวสุดท้าย -> size() == capacity", bounded.size()==2);
-        // R15: push() เมื่อข้อมูลเต็ม -> throw
+
         boolean threwpush = false;
         try {
             bounded.push(15);
