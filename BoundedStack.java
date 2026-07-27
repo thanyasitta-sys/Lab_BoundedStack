@@ -59,32 +59,46 @@ public class BoundedStack {
 
 
     //==== Obsevers ====
-    //คืนค่าบนสุดของStack *peek
+    //คืนค่าบนสุดของStack
     /**
      * @return ค่าบนสุด
      * @throws IllegalStateException ถ้าStackว่างแล้ว
      */
+    public int peek() {
+        return data[top] ;
+    }
 
-    //คืนจำนวนสมาชิกปัจจุบันของStack *getSize
+    //คืนจำนวนสมาชิกปัจจุบันของStack 
     /**
      * @return จำนวนสมาชิก
      */
+    public int size() {
+        return top+1 ;
+    }
    
 
     //ตรวจว่าStackว่างหรือเปล่า *isEmpty
     /**
      * @return true ถ้าไม่มีสมาชิก
      */
-     
+    public boolean isEmpty() {
+        if(size() == 0)return true;
+        return false;
+    }
 
     //==== Mutators ====
-    //เพิ่มค่าบนสุดในStack *push
+    //เพิ่มค่าบนสุดในStack 
     /**
      * @param x ค่าที่เพิ่มเข้าไป
      * @pre Stackต้องยังไม่เต็ม size() < capacity
      * @post size() เพิ่มขึ้น 1, peek() คืนค่า x
      * @throws IllegalStateException ถ้าStackเต็มแล้ว size() == capacity
      */
+    public int push(int x) {
+        top++;
+        data[top] = x ;
+        return x ;
+    }
 
     //ลบค่าบนสุดของStack *pop
     /**
