@@ -65,6 +65,7 @@ public class BoundedStack {
      * @throws IllegalStateException ถ้าStackว่างแล้ว
      */
     public int peek() {
+        if(size() == 0) throw new IllegalStateException();
         return data[top] ;
     }
 
@@ -94,11 +95,11 @@ public class BoundedStack {
      * @post size() เพิ่มขึ้น 1, peek() คืนค่า x
      * @throws IllegalStateException ถ้าStackเต็มแล้ว size() == capacity
      */
-    public int push(int x) {
+    public void push(int x) {
         if(size()==capacity) throw new IllegalStateException();
         top++;
         data[top] = x ;
-        return x ;
+        checkRep();
     }
 
     //ลบค่าบนสุดของStack *pop
@@ -112,9 +113,9 @@ public class BoundedStack {
         if(size()==0) throw new IllegalStateException();
         int poped = data[top];
         top--;
+        checkRep();
         return poped ;
     }
-     
 
     //==== Producers ====
     //คืนStackเดิมที่มีค่าเดิมแต่reverseตำแหน่ง *reverse
@@ -124,5 +125,15 @@ public class BoundedStack {
      * @post size() เท่าเดิม , ถ้าstack เดิมคือ [1,2] stackใหม่คือ [2,1]
      * @return Stackที่reverseแล้ว
      */
-
+    public BoundedStack reverse() {
+        BoundedStack reversed = new BoundedStack(capacity);
+        int j=0;
+        for(int i=top ; i>=0 ; i-- ) {
+            reversed.data[j] = this.data[i];
+            j++;
+        }
+        reversed.top = top;
+        reversed.checkRep();                       
+        return reversed;  
+    }
 }

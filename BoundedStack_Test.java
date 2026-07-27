@@ -41,18 +41,18 @@ public class BoundedStack_Test {
         boolean threwcreat_1 = false;
         try {
             BoundedStack bounded1 = new BoundedStack(-1);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             threwcreat_1 = true;
         }
-        check("capacity=-1 -> throw", threwcreat_1);
+        check("capacity=-1 -> throw IllegalArgumentException", threwcreat_1);
 
         boolean threwcreat_2 = false;
         try {
             BoundedStack bounded2 = new BoundedStack(0);
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             threwcreat_2 = true;
         }
-        check("capacity=0 -> throw", threwcreat_2);
+        check("capacity=0 -> throw IllegalArgumentException", threwcreat_2);
 
         BoundedStack bounded3 = new BoundedStack(1);
         check("capacity=1 -> isEmpty==true",bounded3.isEmpty());
@@ -69,7 +69,7 @@ public class BoundedStack_Test {
         boolean threwpeek = false;
         try {
             bounded.peek();
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             threwpeek = true;
         }
         check("peek() ตอนข้อมูลว่าง -> throw IllegalStateException",threwpeek);
@@ -93,7 +93,7 @@ public class BoundedStack_Test {
         boolean threwpush = false;
         try {
             bounded.push(15);
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             threwpush = true;
         }
         check("push() เมื่อข้อมูลเต็ม -> throw IllegalStateException", threwpush);
@@ -112,20 +112,47 @@ public class BoundedStack_Test {
         boolean threwpop = false;
         try {
             bounded.pop();
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             threwpop = true;
         }
         check("pop() ตอนข้อมูลว่าง -> throw IllegalStateException", threwpop);
     }
     private static void testProducer(){
-        // R19: reverse() -> getSize() เท่าเดิม
-        // R20: reverse() -> ค่าภายในเป็นตัวเดิมที่สลับตำแหน่ง
-        // R21: reverse() -> ต้นฉบับ ไม่ถูกแก้เลย
-        // R23: reverse() stackว่าง -> ได้stackว่างคืน 
-        // R24: reverse() stackที่มีข้อมูลตัวเดียว -> ได้stackที่มีข้อมูลตัวเดียวคืน
+        BoundedStack bounded = new BoundedStack(2);
+        bounded.push(15);
+        bounded.push(30);
+        BoundedStack reversed = bounded.reverse();
+
+        check("reverse() -> getSize() เท่าเดิม", reversed.size() == bounded.size());
+        check("reverse() -> peek() แรกต้องเป็นตัวล่างสุดของอันเดิม",reversed.peek()==15);
+        reversed.pop();
+        check("reverse() -> pop() แล้ว peek() ต้องเป็นตัวบนสุดของอันเดิม", reversed.peek() == 30);
+        
+        check("reverse() -> ต้นฉบับ size ไม่เปลี่ยน", bounded.size() == 2);
+        check("reverse() -> ต้นฉบับ peek ไม่เปลี่ยน", bounded.peek() == 30);
+
+        BoundedStack empty = new BoundedStack(2);
+        BoundedStack emptyReversed = empty.reverse();
+        
+        check("reverse() stackว่าง -> ได้stackว่างคืน",emptyReversed.isEmpty());
+
+        BoundedStack one = new BoundedStack(2);
+        one.push(75);
+        BoundedStack oneReversed = one.reverse();
+
+        check("reverse() -> size ไม่เปลี่ยน", oneReversed.size() == 1);
+        check("reverse() -> peek ไม่เปลี่ยน", oneReversed.peek() == 75);
+
     }
     private static void testExposure(){
-        // R25: reverse() ใช้ array คนละอันกับต้นฉบับ
+        BoundedStack original = new BoundedStack(6);
+        original.push(24);
+        original.push(66);
+        int peekOriginal = original.peek();
+        BoundedStack reversed = original.reverse();
+        reversed.push(99);
+        check("reverse() ใช้ array คนละอันกับต้นฉบับ", peekOriginal == original.peek());
+
     }
 
 }
