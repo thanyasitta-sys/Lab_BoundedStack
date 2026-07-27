@@ -95,6 +95,7 @@ public class BoundedStack {
      * @throws IllegalStateException ถ้าStackเต็มแล้ว size() == capacity
      */
     public int push(int x) {
+        if(size()==capacity) throw new IllegalStateException();
         top++;
         data[top] = x ;
         return x ;

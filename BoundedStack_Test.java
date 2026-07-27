@@ -37,26 +37,47 @@ public class BoundedStack_Test {
     }
     private static void testCreators(){
         System.out.println("-- testCreator --");
-        BoundedStack bounded = new BoundedStack(3);
         // R1: capacity=-1 -> throw
         // R2: capacity=0 -> throw
-        // R3: capacity=1 -> getSize==0, isEmpty==true
-        // R4: capacity=3 -> getSize==0, isEmpty==true
+        // R3: capacity=1 -> isEmpty==true
+        // R4: capacity=3 -> isEmpty==true
     }
     private static void testObservers(){
-        // R5: size() ตอนสแตกว่างเปล่า -> ได้ 0
-        // R6: size() เต็ม == capacity
-        // R7: isEmpty() ว่าง -> true  
-        // R8: isEmpty() มีข้อมูล -> false
-        // R9: peek() ข้อมูลหลายตัว -> ได้ตัวบนสุด 
-        // R10: peek() ตอนข้อมูลว่าง -> throw IllegalStateException
-        // R11: peek() ซ้ำๆ -> ค่าไม่เปลี่ยน
+        BoundedStack bounded = new BoundedStack(2);
+        check("isEmpty() ว่าง -> true ",bounded.isEmpty()); 
+        check("size() ตอนสแตกว่างเปล่า -> ได้ 0", bounded.size() == 0);
+         
+        boolean threwpeek = false;
+        try {
+            bounded.peek();
+        } catch (Exception e) {
+            threwpeek = true;
+        }
+        check("peek() ตอนข้อมูลว่าง -> throw IllegalStateException",threwpeek);
+
+        bounded.push(2);bounded.push(3);
+        check("size() เต็ม == capacity", bounded.size() == 2 );
+        check("isEmpty() มีข้อมูล -> false", !bounded.isEmpty());
+        check("peek() ข้อมูลหลายตัว -> ได้ตัวบนสุด(3)", bounded.peek() == 3);
+        check("peek() ซ้ำๆ -> ค่าไม่เปลี่ยน(เรียกอีกรอบ)", bounded.peek() == 3);
     }
     private static void testPush(){
+        BoundedStack bounded = new BoundedStack(2);
+        bounded.push(12); int before = bounded.size();
+        bounded.push(88); int after = bounded.size();
         // R12: push() -> getSize()ต้องเพิ่ม
+        check("push() -> size()ต้องเพิ่ม", after>before);
         // R13: push() -> peek()แล้วต้องเจอตัวล่าสุดที่push
-        // R14: push()ข้อมูลตัวสุดท้าย -> getSize() == capacity
-        // R15: push() -> push() เมื่อข้อมูลเต็ม -> throw
+        check("push() -> peek()แล้วต้องเจอตัวล่าสุดที่push", bounded.peek()==88);
+        check("push()ข้อมูลตัวสุดท้าย -> size() == capacity", bounded.size()==2);
+        // R15: push() เมื่อข้อมูลเต็ม -> throw
+        boolean threwpush = false;
+        try {
+            bounded.push(15);
+        } catch (Exception e) {
+            threwpush = true;
+        }
+        check("push() เมื่อข้อมูลเต็ม -> throw IllegalStateException", threwpush);
     }
     private static void testPop(){
         // R16: pop() -> getSize()ต้องลด
