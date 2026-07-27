@@ -108,6 +108,12 @@ public class BoundedStack {
      * @return ค่าที่พึ่งถูกลบ
      * @throws IllegalStateException ถ้าStackว่างอยู่แล้ว
      */
+    public int pop() {
+        if(size()==0) throw new IllegalStateException();
+        int poped = data[top];
+        top--;
+        return poped ;
+    }
      
 
     //==== Producers ====

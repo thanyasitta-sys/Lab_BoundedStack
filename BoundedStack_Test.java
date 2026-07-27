@@ -57,12 +57,10 @@ public class BoundedStack_Test {
         BoundedStack bounded3 = new BoundedStack(1);
         check("capacity=1 -> isEmpty==true",bounded3.isEmpty());
         
-        // R4: capacity=3 -> isEmpty==true
         BoundedStack bounded4 = new BoundedStack(3);
         check("capacity=3 -> isEmpty==true", bounded4.isEmpty());
     }
 
-    
     private static void testObservers(){
         BoundedStack bounded = new BoundedStack(2);
         check("isEmpty() ว่าง -> true ",bounded.isEmpty()); 
@@ -101,9 +99,23 @@ public class BoundedStack_Test {
         check("push() เมื่อข้อมูลเต็ม -> throw IllegalStateException", threwpush);
     }
     private static void testPop(){
-        // R16: pop() -> getSize()ต้องลด
-        // R17: pop() -> peek()ต้องไม่เจอตัวที่pop
-        // R18: pop() ตอนข้อมูลว่าง -> throw
+        BoundedStack bounded = new BoundedStack(2);
+
+        bounded.push(12);bounded.push(21);
+        int before = bounded.size();
+        bounded.pop(); int after = bounded.size();
+
+        check("pop() -> getSize()ต้องลด", before>after);
+        check("pop() -> peek()ต้องไม่เจอตัวที่pop", bounded.peek()==12);
+
+        bounded.pop();
+        boolean threwpop = false;
+        try {
+            bounded.pop();
+        } catch (Exception e) {
+            threwpop = true;
+        }
+        check("pop() ตอนข้อมูลว่าง -> throw IllegalStateException", threwpop);
     }
     private static void testProducer(){
         // R19: reverse() -> getSize() เท่าเดิม
