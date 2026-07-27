@@ -19,6 +19,8 @@ public class BoundedStack_Test {
             System.out.println("Assertions are OFF: run with -ea");
         }
 
+        System.out.println("=== BoundedStack Test ===\n");
+
         testCreators();
         testPush();
         testPop();
@@ -34,11 +36,12 @@ public class BoundedStack_Test {
         System.exit(fail == 0 ? 0 : 1); //เช็คผลเทสต์แล้วสั่งปิดโปรแกรมด้วยรหัส `0` (สำเร็จ) หรือ `1` (พัง) เพื่อส่งสัญญาณบอกระบบภายนอกหรือ CI/CD ว่าการทดสอบผ่านหรือล้มเหลว
     }
     private static void testCreators(){
-        // test ขอบและตัวที่ถูกต้อง
+        System.out.println("-- testCreator --");
+        BoundedStack bounded = new BoundedStack(3);
         // R1: capacity=-1 -> throw
         // R2: capacity=0 -> throw
-        // R3: capacity=1 -> true
-        // R4: capacity=3 -> true, size==0, isEmpty==true
+        // R3: capacity=1 -> getSize==0, isEmpty==true
+        // R4: capacity=3 -> getSize==0, isEmpty==true
     }
     private static void testObservers(){
         // R5: size() ตอนสแตกว่างเปล่า -> ได้ 0
@@ -50,18 +53,18 @@ public class BoundedStack_Test {
         // R11: peek() ซ้ำๆ -> ค่าไม่เปลี่ยน
     }
     private static void testPush(){
-        // R12: push() -> size()ต้องเพิ่ม
+        // R12: push() -> getSize()ต้องเพิ่ม
         // R13: push() -> peek()แล้วต้องเจอตัวล่าสุดที่push
-        // R14: push()ข้อมูลตัวสุดท้าย -> size() == capacity
+        // R14: push()ข้อมูลตัวสุดท้าย -> getSize() == capacity
         // R15: push() -> push() เมื่อข้อมูลเต็ม -> throw
     }
     private static void testPop(){
-        // R16: pop() -> size()ต้องลด
+        // R16: pop() -> getSize()ต้องลด
         // R17: pop() -> peek()ต้องไม่เจอตัวที่pop
         // R18: pop() ตอนข้อมูลว่าง -> throw
     }
     private static void testProducer(){
-        // R19: reverse() -> size() เท่าเดิม
+        // R19: reverse() -> getSize() เท่าเดิม
         // R20: reverse() -> ค่าภายในเป็นตัวเดิมที่สลับตำแหน่ง
         // R21: reverse() -> ต้นฉบับ ไม่ถูกแก้เลย
         // R23: reverse() stackว่าง -> ได้stackว่างคืน 

@@ -35,9 +35,9 @@ public class BoundedStack {
     //  แปลง RI ทุกข้อเป็น assert 
     private void checkRep() {
         assert capacity > 0 : "capacity must be > 0" ;
-        assert data != null : "data not be null" ;
+        assert data != null : "data must not be null" ;
         assert data.length == capacity : "data.length must == capacity" ;
-        assert -1 <= top : "top must be >= -1 " ;
+        assert -1 <= top : "-1 must be <= top " ;
         assert top < capacity : "capacity must be > top" ;
     }
 
@@ -62,12 +62,14 @@ public class BoundedStack {
     //คืนค่าบนสุดของStack *peek
     /**
      * @return ค่าบนสุด
+     * @throws IllegalStateException ถ้าStackว่างแล้ว
      */
 
-    //คืนจำนวนสมาชิกปัจจุบันของStack *size
+    //คืนจำนวนสมาชิกปัจจุบันของStack *getSize
     /**
      * @return จำนวนสมาชิก
      */
+   
 
     //ตรวจว่าStackว่างหรือเปล่า *isEmpty
     /**
@@ -98,6 +100,7 @@ public class BoundedStack {
     /**
      * ระวัง ห้ามแก้Stackเดิมเด็ดขาด
      * 
+     * @post size() เท่าเดิม , ถ้าstack เดิมคือ [1,2] stackใหม่คือ [2,1]
      * @return Stackที่reverseแล้ว
      */
 
