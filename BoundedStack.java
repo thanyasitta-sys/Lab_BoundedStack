@@ -30,7 +30,10 @@ public class BoundedStack {
     //  top < capacity
  
     // Safety from rep exposure:
-    //  คัดลอก object ทั้งขาเข้าและขาออก
+    //  top, capacity เป็น primitive -> ปลอดภัยอยู่แล้ว
+    //  data เป็น int[] (mutable) ต้องระวัง:
+    //      ห้ามรับ int[] จากภายนอกมาเก็บตรงๆ ต้อง copy ก่อน
+    //      ต้องสร้าง array ใหม่ copy ค่าไปทีละตัว 
 
     // เขียน checkRep()
     //  แปลง RI ทุกข้อเป็น assert 
@@ -84,8 +87,7 @@ public class BoundedStack {
      * @return true ถ้าไม่มีสมาชิก
      */
     public boolean isEmpty() {
-        if(size() == 0)return true;
-        return false;
+        return size() == 0;
     }
 
     //==== Mutators ====
@@ -112,10 +114,10 @@ public class BoundedStack {
      */
     public int pop() {
         if(size()==0) throw new IllegalStateException();
-        int poped = data[top];
+        int popped = data[top];
         top--;
         checkRep();
-        return poped ;
+        return popped ;
     }
 
     //==== Producers ====
